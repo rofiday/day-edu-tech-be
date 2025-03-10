@@ -56,6 +56,7 @@ export const getAllSection = async (req, res) => {
       status: "success",
       count: sections.count,
       limit,
+      offset,
       data: sections.rows,
       message: "Sections retrieved successfully",
     });
@@ -70,7 +71,7 @@ export const getSectionById = async (req, res) => {
   try {
     const section = await Section.findOne({ where: { id } });
     if (!section) {
-      return res.status(400).json({
+      return res.status(404).json({
         status: "error",
         message: "Section not found",
       });
@@ -109,7 +110,7 @@ export const updateSectionById = async (req, res) => {
   try {
     const section = await Section.findOne({ where: { id } });
     if (!section) {
-      return res.status(400).json({
+      return res.status(404).json({
         status: "error",
         message: "Section not found",
       });
@@ -130,9 +131,8 @@ export const deleteSectionById = async (req, res) => {
   const { id } = req.params;
   try {
     const section = await Section.findOne({ where: { id } });
-    console.log(section);
     if (!section) {
-      return res.status(400).json({
+      return res.status(404).json({
         status: "error",
         message: "Section not found",
       });

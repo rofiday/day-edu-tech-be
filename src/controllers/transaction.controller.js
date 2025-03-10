@@ -24,7 +24,7 @@ export const createSnapTransaction = async (req, res) => {
         },
       ],
     });
-    console.log("userCourses: ", user.courses);
+
     const totalPrice = user.courses.reduce(
       (total, course) => total + course.price,
       0
@@ -108,7 +108,6 @@ export const checkSnapTransaction = async (req, res) => {
       transaction.transaction_status === "success"
     ) {
       status = "paid";
-      console.log("PAID");
     }
     if (transaction.transaction_status === "cancel") status = "cancelled";
     if (transaction.transaction_status === "expire") status = "expired";
@@ -135,7 +134,7 @@ export const checkSnapTransaction = async (req, res) => {
 
 export const getAllUserTransactions = async (req, res) => {
   const { id } = req.user;
-  console.log("GETALLUSERTRANSACTION");
+
   const { limit = 10, offset = 0, search = "" } = req.query;
   try {
     const orders = await Order.findAndCountAll({
@@ -269,7 +268,9 @@ export const cancelTransaction = async (req, res) => {
     let status = "cancelled";
     order.paymentStatus = transaction.transaction_status;
     order.status = status;
+
     await order.save();
+
     return res.status(200).send({
       status: "success",
       code: 200,
@@ -277,7 +278,6 @@ export const cancelTransaction = async (req, res) => {
       data: order,
     });
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json({
       status: "failed",
       message: error.message,

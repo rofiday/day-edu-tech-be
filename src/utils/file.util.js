@@ -7,8 +7,7 @@ const __dirname = path.dirname(__filename);
 // Set lokasi penyimpanan file
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../assets/images/" + req.body.folder)); // Path penyimpanan
-    console.log("urlImage", req.body.folder);
+    cb(null, path.join(__dirname, "../assets/images/" + req.body.folder));
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname)); // Rename file agar unik

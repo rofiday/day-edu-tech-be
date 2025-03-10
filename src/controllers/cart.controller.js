@@ -84,7 +84,6 @@ export const updateUserCart = async (req, res) => {
       await Promise.all(
         orders.rows.map(async (order) => {
           const transaction = await midtransCheckTransaction(order.orderId);
-          console.log(transaction);
           if (
             transaction.transaction_status === "pending" ||
             transaction.transaction_status === "settlement" ||

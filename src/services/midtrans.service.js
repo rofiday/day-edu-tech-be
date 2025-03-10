@@ -22,7 +22,8 @@ export const midtransCreateSnapTransaction = async (transactionDetails) => {
   } catch (error) {
     console.error(error.response.data.error_messages);
     throw new Error(
-      error.response.data.error_messages || "Failed to create snap transaction"
+      error.response?.data?.error_messages ||
+        "Failed to create snap transaction"
     );
   }
 };
@@ -37,9 +38,10 @@ export const midtransCheckTransaction = async (orderId) => {
     });
     return response.data;
   } catch (error) {
-    console.error(error.response.data.error_messages);
+    console.error(error.response?.data?.error_messages);
     throw new Error(
-      error.response.data.error_messages || "Failed to check transaction status"
+      error.response?.data?.error_messages ||
+        "Failed to check transaction status"
     );
   }
 };
@@ -60,9 +62,8 @@ export const midtransCancelTransaction = async (orderId) => {
     );
     return response.data;
   } catch (error) {
-    console.log(error.response.data.error_messages);
     throw new Error(
-      error.response.data.error_messages || "Failed to Cancel Transaction"
+      error.response?.data?.error_messages || "Failed to Cancel Transaction"
     );
   }
 };

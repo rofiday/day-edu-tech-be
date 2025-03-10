@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import db from "../models/index.js";
 const { User } = db;
+import { Op } from "sequelize";
 import jwt from "jsonwebtoken";
 import { decryptPayload } from "../utils/forge.util.js";
 import Joi from "joi";
@@ -73,10 +74,12 @@ export const middlewareAuthRegister = async (req, res, next) => {
   try {
     const schema = Joi.object({
       fullname: Joi.string().required(),
-      username: Joi.string().required(),
+      username: Joi.string().required().min(3),
       phoneNumber: Joi.string().required(),
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
+      email: Joi.string()
+        .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+        .required(),
+      password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
     });
     const { error } = schema.validate(req.body);
     if (error) {

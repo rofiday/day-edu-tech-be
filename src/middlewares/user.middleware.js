@@ -26,9 +26,11 @@ export const middlewarecreateUser = async (req, res, next) => {
   try {
     const schema = Joi.object({
       fullname: Joi.string().required(),
-      username: Joi.string().required(),
+      username: Joi.string().required().min(3),
       phoneNumber: Joi.string().required(),
-      email: Joi.string().email().required(),
+      email: Joi.string()
+        .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+        .required(),
       roleName: Joi.string().required(),
       courses: Joi.array().required(),
     });

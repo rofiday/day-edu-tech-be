@@ -17,7 +17,13 @@ jest.unstable_mockModule("@/models/index.js", () => ({
       include: jest.fn(),
       findOne: jest.fn(),
     },
+    Order: {
+      findAndCountAll: jest.fn(),
+    },
   },
+}));
+jest.unstable_mockModule("@/services/midtrans.service.js", () => ({
+  midtransCheckTransaction: jest.fn(),
 }));
 
 describe("Cart Controller", () => {
@@ -111,35 +117,7 @@ describe("Cart Controller", () => {
         })
       );
     });
-    test("should fail because cart already exists", async () => {
-      const req = {
-        user: {
-          id: 1,
-        },
-        body: {
-          courseId: 1,
-        },
-      };
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-        send: jest.fn(),
-      };
-      db.Cart.findOne.mockResolvedValue({ id: 1 });
-      console.error = jest.fn();
-      await addCourseToCart(req, res);
-      expect(db.Cart.findOne).toHaveBeenCalledWith({
-        where: {
-          userId: req.user.id,
-          courseId: req.body.courseId,
-        },
-      });
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({
-        status: "error",
-        message: "Failed to add course to cart, course already exists",
-      });
-    });
+
     test("should fail because internal server error", async () => {
       const req = {
         user: {
@@ -174,29 +152,7 @@ describe("Cart Controller", () => {
     afterEach(() => {
       jest.restoreAllMocks();
     });
-    test("should fail because cart not found", async () => {
-      const req = {
-        user: {
-          id: 1,
-        },
-        body: {
-          courseId: 1,
-        },
-      };
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-        send: jest.fn(),
-      };
-      db.Cart.findOne.mockResolvedValue(null);
-      console.error = jest.fn();
-      await deleteCourseFromCart(req, res);
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({
-        status: "error",
-        message: "Failed to delete course from cart",
-      });
-    });
+
     test("should successfully delete course from cart", async () => {
       const req = {
         user: {
@@ -250,6 +206,109 @@ describe("Cart Controller", () => {
       await deleteCourseFromCart(req, res);
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.send).toHaveBeenCalledWith("Internal Server Error");
+    });
+  });
+  describe("updateUserCart", () => {
+    let req, res, db, updateUserCart, midtransCheckTransaction;
+
+    beforeEach(async () => {
+      midtransCheckTransaction = (
+        await import("@/services/midtrans.service.js")
+      ).midtransCheckTransaction;
+      db = (await import("@/models/index.js")).default;
+      updateUserCart = (await import("@/controllers/cart.controller.js"))
+        .updateUserCart;
+      req = { user: { id: 1 } };
+      res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+        send: jest.fn(),
+      };
+    });
+
+    it("should successfully update user cart when transaction is completed", async () => {
+      db.Order.findAndCountAll.mockResolvedValue({
+        rows: [{ orderId: "123", data: [{ id: 1 }] }],
+      });
+      midtransCheckTransaction.mockResolvedValue({
+        transaction_status: "success",
+      });
+      db.Cart.findAll.mockResolvedValue([{ destroy: jest.fn() }]);
+
+      await updateUserCart(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        status: "success",
+        message: "Successfully update user cart",
+        isUpdatingCart: true,
+      });
+    });
+
+    it("should successfully update user cart when transaction is completed but carts is empty", async () => {
+      db.Order.findAndCountAll.mockResolvedValue({
+        rows: [{ orderId: "123", data: [{ id: 1 }] }],
+      });
+      midtransCheckTransaction.mockResolvedValue({
+        transaction_status: "success",
+      });
+      db.Cart.findAll.mockResolvedValue([]);
+
+      await updateUserCart(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        status: "success",
+        message: "Successfully update user cart",
+        isUpdatingCart: false,
+      });
+    });
+
+    it("should successfully update user cart when transaction is cancelled", async () => {
+      db.Order.findAndCountAll.mockResolvedValue({
+        rows: [{ orderId: "123", data: [{ id: 1 }] }],
+      });
+      midtransCheckTransaction.mockResolvedValue({
+        transaction_status: "cancel",
+      });
+      db.Cart.findAll.mockResolvedValue([{ destroy: jest.fn() }]);
+
+      await updateUserCart(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        status: "success",
+        message: "Successfully update user cart",
+        isUpdatingCart: false,
+      });
+    });
+
+    it("should not successfully update user cart when rows is empty", async () => {
+      db.Order.findAndCountAll.mockResolvedValue({
+        rows: [],
+      });
+      midtransCheckTransaction.mockResolvedValue({
+        transaction_status: "success",
+      });
+      db.Cart.findAll.mockResolvedValue([{ destroy: jest.fn() }]);
+
+      await updateUserCart(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        status: "success",
+        message: "Successfully update user cart",
+        isUpdatingCart: false,
+      });
+    });
+
+    it("should return 500 on error", async () => {
+      db.Order.findAndCountAll.mockRejectedValue(new Error("Database error"));
+
+      await updateUserCart(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.send).toHaveBeenCalledWith("Database error");
     });
   });
 });

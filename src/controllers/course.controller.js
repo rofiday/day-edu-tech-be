@@ -70,6 +70,7 @@ export const getAllCourse = async (req, res) => {
       status: "success",
       count: courses.count,
       limit,
+      offset,
       data: courses.rows,
       message: "Courses retrieved successfully",
     });
@@ -82,7 +83,6 @@ export const getAllCourse = async (req, res) => {
 export const getCourseByIdPublic = async (req, res) => {
   const { id } = req.params;
   try {
-    console.log("PUBLIC", id);
     const course = await Course.findOne({
       where: { id },
       include: [
@@ -123,7 +123,6 @@ export const getCourseByIdPublic = async (req, res) => {
 export const getCourseByIdProtected = async (req, res) => {
   const { id } = req.params;
   try {
-    console.log(id);
     const course = await Course.findOne({
       where: { id },
       include: [
@@ -206,8 +205,7 @@ export const getCourseByIdLms = async (req, res) => {
       attributes: ["courseId"],
       where: { userId: req.user.id },
     });
-    console.log("userCourses", userCourses);
-    console.log("id", id);
+
     const isValidData = userCourses.find((course) => course.courseId === id);
     if (!isValidData) {
       return res.status(404).json({
@@ -266,9 +264,7 @@ export const createCourse = async (req, res) => {
 
 export const updateCourseById = async (req, res) => {
   const { id } = req.params;
-  console.log(req.file);
   try {
-    console.log("coreapi", req);
     req.body.data = {};
     const course = await Course.findOne({
       where: { id },
@@ -303,7 +299,6 @@ export const updateCourseById = async (req, res) => {
 export const deleteCourseById = async (req, res) => {
   const { id } = req.params;
   try {
-    console.log("id", id);
     const course = await Course.findOne({
       where: { id },
     });

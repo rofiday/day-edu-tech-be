@@ -55,7 +55,6 @@ export const decryptPayload = (compositeHash) => {
     decipher.finish();
     return JSON.parse(decipher.output.toString("utf-8"));
   } catch (error) {
-    console.log(error.message);
     console.error("failed to process the request");
     throw new Error("failed to process the request");
   }

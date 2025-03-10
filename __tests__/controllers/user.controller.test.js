@@ -338,13 +338,22 @@ describe("User Controller", () => {
         commit: jest.fn().mockResolvedValue(),
         rollback: jest.fn().mockResolvedValue(),
       });
+
       bcrypt.hash.mockResolvedValue("hashedPassword");
       db.User.create.mockResolvedValue({ id: "1", ...req.body });
+
+      // Mocking Role.findOne agar mengembalikan null
       db.Role.findOne.mockResolvedValue(null);
+
       console.error = jest.fn();
+
       await createUser(req, res);
+
       expect(res.status).toHaveBeenCalledWith(404);
-      expect(res.send).toHaveBeenCalledWith("Role not found");
+      expect(res.json).toHaveBeenCalledWith({
+        status: "error",
+        message: "Role not found",
+      });
     });
 
     test("should return 500 on internal server error", async () => {
@@ -377,10 +386,10 @@ describe("User Controller", () => {
       req = {
         params: { id: "1" },
         body: {
-          fullname: "Updated Name",
-          username: "updatedusername",
-          phoneNumber: "123456789",
-          email: "updated@example.com",
+          fullname: null,
+          username: null,
+          phoneNumber: null,
+          email: null,
           password: "newpassword",
           courses: [{ value: "course-1" }, { value: "course-2" }],
         },
@@ -404,6 +413,17 @@ describe("User Controller", () => {
     });
 
     test("should successfully update user and update courses", async () => {
+      req = {
+        params: { id: "1" },
+        body: {
+          fullname: "Updated Name",
+          username: "updatedusername",
+          phoneNumber: "123456789",
+          email: "updated@example.com",
+          password: "newpassword",
+          courses: [{ value: "course-1" }, { value: "course-2" }],
+        },
+      };
       const mockUser = {
         id: "1",
         fullname: "Old Name",
@@ -458,8 +478,74 @@ describe("User Controller", () => {
         message: "User updated successfully",
       });
     });
+    test("should successfully update user and update courses but without parameters", async () => {
+      const mockUser = {
+        id: "1",
+        fullname: "Old Name",
+        username: "oldusername",
+        phoneNumber: "987654321",
+        email: "old@example.com",
+        password: "hashedOldPassword",
+        courses: [],
+        update: jest.fn().mockResolvedValue(),
+      };
+
+      const mockUserCourses = [
+        { destroy: jest.fn().mockResolvedValue() },
+        { destroy: jest.fn().mockResolvedValue() },
+      ];
+
+      db.User.findOne.mockResolvedValue(mockUser);
+      db.UserCourse.findAll.mockResolvedValue(mockUserCourses);
+      db.UserCourse.create.mockResolvedValue({});
+      bcrypt.hash.mockResolvedValue("hashedNewPassword");
+
+      await updateUserById(req, res);
+
+      expect(mockUserCourses[0].destroy).toHaveBeenCalled();
+      expect(mockUserCourses[1].destroy).toHaveBeenCalled();
+
+      expect(db.UserCourse.create).toHaveBeenCalledWith({
+        id: expect.any(String),
+        userId: "1",
+        courseId: "course-1",
+        data: {},
+      });
+      expect(db.UserCourse.create).toHaveBeenCalledWith({
+        id: expect.any(String),
+        userId: "1",
+        courseId: "course-2",
+        data: {},
+      });
+
+      expect(mockUser.update).toHaveBeenCalledWith({
+        fullname: "Old Name",
+        username: "oldusername",
+        phoneNumber: "987654321",
+        email: "old@example.com",
+        courses: mockUser.courses,
+      });
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        status: "success",
+        data: mockUser,
+        message: "User updated successfully",
+      });
+    });
 
     test("should update user without changing password", async () => {
+      req = {
+        params: { id: "1" },
+        body: {
+          fullname: "Updated Name",
+          username: "updatedusername",
+          phoneNumber: "123456789",
+          email: "updated@example.com",
+          password: "newpassword",
+          courses: [{ value: "course-1" }, { value: "course-2" }],
+        },
+      };
       req.body.password = null;
 
       const mockUser = {
@@ -498,6 +584,17 @@ describe("User Controller", () => {
     });
 
     test("should handle error when updating user", async () => {
+      req = {
+        params: { id: "1" },
+        body: {
+          fullname: "Updated Name",
+          username: "updatedusername",
+          phoneNumber: "123456789",
+          email: "updated@example.com",
+          password: "newpassword",
+          courses: [{ value: "course-1" }, { value: "course-2" }],
+        },
+      };
       db.User.findOne.mockImplementation(() => {
         throw new Error("Internal Server Error");
       });
