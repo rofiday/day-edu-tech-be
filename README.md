@@ -7,15 +7,15 @@ serverside untuk komponen dayedutechfe, lms platform education technologi, servi
 -   📚 API Documentation
 -   🧪 Unit Testing
 -   🔐 Environment Variables
--    ⚙️ Installation
+-   ⚙️ Installation
 -   🔗 Frontend Repository
 
 # Features
-Authentication: fitur register dan login with JWT Token dan security payload
-addImage: upload gambar  untuk course dan profile menggunakan multer
-payment gateway: midtrans payment gateway
-email verification: melakukan verifikasi pada saat register berhasil sebelum melakukan login menggunakan nodemailer dan handlebars sebagai template
-firebase: configurasi untuk login with google
+🔐Authentication: fitur register dan login with JWT Token dan security payload
+🙎‍♂️addImage: upload gambar  untuk course dan profile menggunakan multer
+💵payment gateway: midtrans payment gateway
+📩email verification: melakukan verifikasi pada saat register berhasil sebelum melakukan login menggunakan nodemailer dan handlebars sebagai template
+🔥firebase: configurasi untuk login with google
 
 # 📚 APi documentation
 ![Image](https://github.com/user-attachments/assets/2e5c78b4-7dff-4757-a83f-1589ce421435)
