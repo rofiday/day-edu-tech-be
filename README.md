@@ -18,12 +18,12 @@ email verification: melakukan verifikasi pada saat register berhasil sebelum mel
 firebase: configurasi untuk login with google
 
 # 📚 APi documentation
-
+![Image](https://github.com/user-attachments/assets/2e5c78b4-7dff-4757-a83f-1589ce421435)
 
 
 # 🧪 Unit Testing
 
-
+![Image](https://github.com/user-attachments/assets/f0faad7f-206e-427e-9405-6f4052303f39)
 
 
 # 🔐 Environment Variables
