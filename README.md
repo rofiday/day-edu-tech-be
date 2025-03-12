@@ -1,7 +1,7 @@
 # DayEduTechBe
 serverside untuk komponen dayedutechfe, lms platform education technologi, services API untuk membeli course dan access to lms for learning, berisikan authentication dan order management
 
-](https://github.com/Fiorezarn/lecafe-be#-unit-testing)
+
 # Table Of Contents
 -   🚀 Features
 -   📚 API Documentation
@@ -123,13 +123,12 @@ APP_SECRET_KEY=you_app_secret_key
 
 ## ⚙️ Installation
 
-[](https://github.com/Fiorezarn/lecafe-be/blob/main/README.md#%EF%B8%8F-installation)
 
 1.  Clone the repository:
 
 ```
 git clone https://github.com/your-username/day-edu-tech-be.git
-cd day-edu-tecgh-be
+cd day-edu-tech-be
 
 ```
 
