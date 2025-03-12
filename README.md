@@ -17,7 +17,7 @@ payment gateway: midtrans payment gateway
 email verification: melakukan verifikasi pada saat register berhasil sebelum melakukan login menggunakan nodemailer dan handlebars sebagai template
 firebase: configurasi untuk login with google
 
-#APi documentation
+# 📚 APi documentation
 
 
 
