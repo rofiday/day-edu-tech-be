@@ -27,100 +27,91 @@ serverside untuk komponen dayedutechfe, lms platform education technologi, servi
 
 
 # 🔐 Environment Variables
-NODE_ENV=you_node_env
+	NODE_ENV=you_node_env
 
-PORT=you_port
+	PORT=you_port
 
-#postman api
+	#postman api
 
-POSTMAN_API_URL=you_postman_api_url
+	POSTMAN_API_URL=you_postman_api_url
+		
+	POSTMAN_ACCESS_KEY=you_postman_access_key
 
-POSTMAN_ACCESS_KEY=you_postman_access_key
-
-SWAGGER_OUTPUT_PATH= you_swagger_output_path
-
-  
-
-#app_url
-
-APP_URL=you_app_url
-
-API_URL=you_api_url
-
-#previxApp
-
-PREFIX_APP=you_prefix_app
-
-#midtrans
-
-MIDTRANS_SNAP_URL=you_midtrans_snap_url
-
-MIDTRANS_BASE_URL=you_midtrans_base_url
-
-MIDTRANS_SERVER_KEY= you_midtrans_server_key
+	SWAGGER_OUTPUT_PATH= you_swagger_output_path
 
   
 
-DB_USERNAME_DEVELOPMENT = you_uisername_development
+	#app_url
 
-DB_PASSWORD_DEVELOPMENT =you_password_development
+	APP_URL=you_app_url
 
-DB_DATABASE_DEVELOPMENT = you_database_development
+	API_URL=you_api_url
 
-DB_HOST_DEVELOPMENT =you_host_development
+	#previxApp
+	
+	PREFIX_APP=you_prefix_app
 
-DB_DIALECT_DEVELOPMENT = you_dialect_development
+	#midtrans
 
-#jwtsecret
+	MIDTRANS_SNAP_URL=you_midtrans_snap_url
 
-JWT_SECRET=you_jwt_secret
+	MIDTRANS_BASE_URL=you_midtrans_base_url
 
-#setting Firebase
+	MIDTRANS_SERVER_KEY= you_midtrans_server_key
 
-FIREBASE_TYPE= you_firebase_type
+	DB_USERNAME_DEVELOPMENT = you_uisername_development
 
-FIREBASE_PROJECT_ID=you_firebase_project_id
+	DB_PASSWORD_DEVELOPMENT =you_password_development
 
-FIREBASE_PRIVATE_KEY_ID=you_firebase_private_key_id
+	DB_DATABASE_DEVELOPMENT = you_database_development
 
-FIREBASE_PRIVATE_KEY=you_firebase_private_key
+	DB_HOST_DEVELOPMENT =you_host_development
 
-FIREBASE_CLIENT_EMAIL=you_firebase_client_email
+	DB_DIALECT_DEVELOPMENT = you_dialect_development
 
-FIREBASE_CLIENT_ID=you_firebase_client_id
+	#jwtsecret
 
-FIREBASE_AUTH_URI=you_firebase_auth_uri
+	JWT_SECRET=you_jwt_secret
 
-FIREBASE_TOKEN_URI=you_firebase_token_uri
+	#setting Firebase
 
-FIREBASE_AUTH_PROVIDER_X509_CERT_URL= you_firebase_auth_provider_x509_cert_url
+	FIREBASE_TYPE= you_firebase_type
 
-FIREBASE_CLIENT_X509_CERT_URL=you_firebase_client_X509_CERT_URL
+	FIREBASE_PROJECT_ID=you_firebase_project_id
 
-FIREBASE_UNIVERSE_DOMAIN=you_firebase_universe_domain
+	FIREBASE_PRIVATE_KEY_ID=you_firebase_private_key_id
 
+	FIREBASE_PRIVATE_KEY=you_firebase_private_key
+	
+	FIREBASE_CLIENT_EMAIL=you_firebase_client_email
+
+	FIREBASE_CLIENT_ID=you_firebase_client_id
+
+	FIREBASE_AUTH_URI=you_firebase_auth_uri
+
+	FIREBASE_TOKEN_URI=you_firebase_token_uri
+	
+	FIREBASE_AUTH_PROVIDER_X509_CERT_URL=you_firebase_auth_provider_x509_cert_url
+
+	FIREBASE_CLIENT_X509_CERT_URL=you_firebase_client_X509_CERT_URL
+
+	FIREBASE_UNIVERSE_DOMAIN=you_firebase_universe_domain
+	
+	MAIL_APP_PASSWORD= you_mail_app_password
+
+	MAIL_SERVICE= you_mail_service
+
+	MAIL_USER=you_mail_user
   
-  
 
-MAIL_APP_PASSWORD= you_mail_app_password
+	COOKIE_NAME=you_cookie_name
 
-MAIL_SERVICE= you_mail_service
+	APP_PRIVATE_KEY=you_app_private_key==
 
-MAIL_USER=you_mail_user
-  
-
-COOKIE_NAME=you_cookie_name
-
-APP_PRIVATE_KEY=you_app_private_key==
-
-  
-
-APP_PUBLIC_KEY=you_app_public_key==
-
-  
-
-APP_SECRET_KEY=you_app_secret_key
-
+	APP_PUBLIC_KEY=you_app_public_key==
+	
+	APP_SECRET_KEY=you_app_secret_key
+ 
 ## ⚙️ Installation
 
 
